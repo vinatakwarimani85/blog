@@ -1,5 +1,6 @@
 package com.firstTry.demo.category;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,7 +10,11 @@ public class Category {
     @Id
     @GeneratedValue
     private  int categoryId;
+
+    @Column(name ="title")
     private  String categoryTitle;
+
+    @Column(name = "description")
     private   String categoryDiscription;
 
     public int getCategoryId() {
