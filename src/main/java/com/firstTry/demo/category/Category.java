@@ -1,9 +1,18 @@
 package com.firstTry.demo.category;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.firstTry.demo.posts.Post;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Category {
@@ -16,8 +25,19 @@ public class Category {
 
     @Column(name = "description")
     private   String categoryDiscription;
+    
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts = new ArrayList<>();
 
-    public int getCategoryId() {
+    public List<Post> getPost() {
+		return posts;
+	}
+
+	public void setPost(List<Post> post) {
+		this.posts = post;
+	}
+
+	public int getCategoryId() {
         return categoryId;
     }
 
@@ -37,7 +57,12 @@ public class Category {
         this.categoryTitle = categoryTitle;
     }
 
-    public void setCategoryDiscription(String categoryDiscription) {
+    public Category() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public void setCategoryDiscription(String categoryDiscription) {
         this.categoryDiscription = categoryDiscription;
     }
 }

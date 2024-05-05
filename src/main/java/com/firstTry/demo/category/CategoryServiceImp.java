@@ -10,7 +10,7 @@ import org.springframework.ui.ModelMap;
 import com.firstTry.demo.exceptions.ResourceNotFoundException;
 import com.firstTry.demo.user.User;
 
-@Component
+@Component 
 public class CategoryServiceImp implements CategoryService {
 	
 	@Autowired
@@ -42,7 +42,7 @@ public class CategoryServiceImp implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto getCategory(Integer id) {
+	public CategoryDto getCategory(int id) {
 		Category cat = categoryRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category", "categoryId", id));
 		return catDto.categoryToDto(cat);
 	}
@@ -58,7 +58,7 @@ public class CategoryServiceImp implements CategoryService {
 	}
 
 	@Override
-	public void deleteCategory(Integer id) {
+	public void deleteCategory(int id) {
 		Category cat = categoryRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category", "categoryId", id));
 		categoryRepo.delete(cat);
 	}

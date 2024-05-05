@@ -1,11 +1,20 @@
 package com.firstTry.demo.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.annotations.CascadeType;
 import org.springframework.context.annotation.Primary;
+
+import com.firstTry.demo.posts.Post;
 
 import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 
 @Entity(name="user_details")
 public class User {
@@ -18,8 +27,17 @@ public class User {
 	private String password;
 	private String about;
 	
+	@OneToMany(mappedBy = "user", cascade = jakarta.persistence.CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Post> post = new ArrayList();
 	
-	
+	public List<Post> getPost() {
+		return post;
+	}
+
+	public void setPosts(List<Post> post) {
+		this.post = post;
+	}
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub

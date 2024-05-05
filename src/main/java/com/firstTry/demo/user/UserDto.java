@@ -4,11 +4,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
+import com.firstTry.demo.posts.Post;
 import com.firstTry.demo.uttils.Validation;
 
 //import com.firstTry.demo.uttils.*;
@@ -38,8 +44,15 @@ public class UserDto {
 	@NotEmpty
 	private String about;
 	
+	
+	
+	
+
 	@Autowired
 	private Validation validate;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	public UserDto() {
 		super();
@@ -104,24 +117,12 @@ public class UserDto {
 		{
 			throw new com.firstTry.demo.exceptions.ValidationException("UserName");
 		}
-		user.setId(userdto.getId());
-		user.setName(userdto.getName());
-		user.setEmail(userdto.getEmail());
-		user.setAbout(userdto.getAbout());
-		user.setPassword(userdto.getPassword());
-		return user;
+		return this.modelMapper.map(userdto,User.class);
 	}
 	
 	
 	public UserDto userToUserDto(User user) {
-		UserDto userdto = new UserDto();
-		userdto.setId(user.getId());
-		userdto.setName(user.getName());
-		userdto.setEmail(user.getEmail());
-		userdto.setPassword(user.getPassword());
-		userdto.setAbout(user.getAbout());
-		
-		return userdto;
+		return this.modelMapper.map(user, UserDto.class);
 	}
 
 }
