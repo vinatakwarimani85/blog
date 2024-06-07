@@ -1,11 +1,16 @@
 package com.firstTry.demo.posts;
 
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.firstTry.demo.exceptions.ResourceNotFoundException;
@@ -59,11 +64,14 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost() {
-		List<Post> posts = postRepo.findAll();
+	public List<PostDto> getAllPost(int pageSize,int pageNumber) {
+		Pageable p = PageRequest.of(pageNumber, pageSize);
+		//Pag<Post> posts = postRepo.findAll(p);
+		Page<Post> pagePost= this.postRepo.findAll(p);
+		List<Post> allPost=pagePost.getContent();
 		List<PostDto> dtoPosts = new ArrayList<PostDto>();
-		for(Post p:posts) {
-			dtoPosts.add(this.modelMapper.map(p, PostDto.class));
+		for(Post post:allPost) {
+			dtoPosts.add(this.modelMapper.map(post, PostDto.class));
 		}
 		return dtoPosts;
 	}

@@ -3,6 +3,7 @@ package com.firstTry.demo.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
@@ -19,13 +20,16 @@ public class CategoryServiceImp implements CategoryService {
 	@Autowired
 	private CategoryDto catDto;
 	
-	private ModelMap model;
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public CategoryDto createCategory(CategoryDto categoryDto) {
-		Category category = catDto.dtoToCategory(categoryDto);
+		Category category = this.modelMapper.map(categoryDto,Category.class);
+		//Category category = catDto.dtoToCategory(categoryDto);
 		Category savedCategory = categoryRepo.save(category);
-		CategoryDto cat = catDto.categoryToDto(savedCategory);
+		//CategoryDto cat = catDto.categoryToDto(savedCategory);
+		CategoryDto cat = this.modelMapper.map(savedCategory, CategoryDto.class);
 		return cat;
 	}
 
@@ -38,13 +42,16 @@ public class CategoryServiceImp implements CategoryService {
 	    if(categoryDto.getCategoryDiscription()!=null)
 	    	cat.setCategoryDiscription(categoryDto.getCategoryDiscription());
 	    Category updatedCat = categoryRepo.save(cat);
-	    return catDto.categoryToDto(updatedCat);
+	    //return catDto.categoryToDto(updatedCat);
+	    return this.modelMapper.map(updatedCat, CategoryDto.class);
+	    
 	}
 
 	@Override
 	public CategoryDto getCategory(int id) {
 		Category cat = categoryRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category", "categoryId", id));
-		return catDto.categoryToDto(cat);
+		//return catDto.categoryToDto(cat);
+		return this.modelMapper.map(cat, CategoryDto.class);
 	}
 
 	@Override
@@ -52,7 +59,7 @@ public class CategoryServiceImp implements CategoryService {
 		List<Category> catList =categoryRepo.findAll();
 		List<CategoryDto> catDtoList =new ArrayList();
 		for(Category cat:catList) {
-			catDtoList.add(catDto.categoryToDto(cat));
+			catDtoList.add(this.modelMapper.map(cat, CategoryDto.class));
 		}
 		return catDtoList;
 	}

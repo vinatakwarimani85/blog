@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.firstTry.demo.user.UserDto;
 
 import jakarta.validation.Valid;
@@ -39,8 +40,11 @@ public class postControler {
 	
 	
 	@GetMapping("/get-all-posts")
-	public ResponseEntity<List<PostDto>> getAllPost(){
-		List<PostDto> posts=postService.getAllPost();
+	public ResponseEntity<List<PostDto>> getAllPost(@RequestBody ObjectNode  json){
+		int  pageSize = json.get("pageSize").asInt();
+		int  pageNumber = json.get("pageNumber").asInt();
+		
+		List<PostDto> posts=postService.getAllPost(pageSize,pageNumber);
 		return ResponseEntity.status(HttpStatus.OK).body(posts);
 	}
 	
